@@ -1,0 +1,59 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "http://schema.dev.data.humancellatlas.org/type/file/1.0.0/protocol_file",
+    "description": "Protocol files belonging to a project.",
+    "additionalProperties": false,
+    "required": [
+        "describedBy",
+        "schema_type",
+        "file_core"
+    ],
+    "title": "protocol_file",
+    "type": "object",
+    "properties": {
+        "describedBy": {
+            "description": "The URL reference to the schema.",
+            "type": "string",
+            "pattern": "^(http|https)://schema.(.*?)humancellatlas.org/type/file/(([0-9]{1,}.[0-9]{1,}.[0-9]{1,})|([a-zA-Z]*?))/protocol_file"
+        },
+        "schema_version": {
+            "description": "The version number of the schema in major.minor.patch format.",
+            "type": "string",
+            "pattern": "^[0-9]{1,}.[0-9]{1,}.[0-9]{1,}$",
+            "example": "4.6.1"
+        },
+        "schema_type": {
+            "description": "The type of the metadata schema entity.",
+            "type": "string",
+            "enum": [
+                "file"
+            ]
+        },
+        "file_core": {
+            "description": "A file entity contains information about a data file produced from any process.",
+            "required": [
+                "file_name",
+                "file_format"
+            ],
+            "title": "file_core",
+            "type": "object",
+            "properties": {
+                "file_name": {
+                    "description": "The filename of the data file.",
+                    "type": "string",
+                    "user_friendly": "File name"
+                },
+                "file_format": {
+                    "description": "The format of the data file.",
+                    "type": "string",
+                    "user_friendly": "File format"
+                },
+                "checksum": {
+                    "description": "MD5 checksum of the data file.",
+                    "type": "string",
+                    "user_friendly": "Checksum"
+                }
+            }
+        }
+    }
+}

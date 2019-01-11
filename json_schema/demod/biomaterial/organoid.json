@@ -1,0 +1,417 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://schema.dev.data.humancellatlas.org/type/biomaterial/8.3.11/organoid",
+    "description": "Information about an organoid biomaterial.",
+    "additionalProperties": false,
+    "required": [
+        "describedBy",
+        "schema_type",
+        "biomaterial_core",
+        "model_for_organ"
+    ],
+    "title": "Organoid",
+    "name": "organoid",
+    "type": "object",
+    "properties": {
+        "describedBy": {
+            "description": "The URL reference to the schema.",
+            "type": "string",
+            "pattern": "^(http|https)://schema.(.*?)humancellatlas.org/type/biomaterial/(([0-9]{1,}.[0-9]{1,}.[0-9]{1,})|([a-zA-Z]*?))/organoid"
+        },
+        "schema_version": {
+            "description": "The version number of the schema in major.minor.patch format.",
+            "type": "string",
+            "pattern": "^[0-9]{1,}.[0-9]{1,}.[0-9]{1,}$",
+            "example": "4.6.1"
+        },
+        "schema_type": {
+            "description": "The type of the metadata schema entity.",
+            "type": "string",
+            "enum": [
+                "biomaterial"
+            ]
+        },
+        "provenance": {
+            "description": "Provenance information added or generated at time of ingest.",
+            "required": [
+                "document_id",
+                "submission_date"
+            ],
+            "title": "Provenance",
+            "name": "provenance",
+            "type": "object",
+            "properties": {
+                "submission_date": {
+                    "description": "When project was first submitted to database.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "submitter_id": {
+                    "description": "ID of individual who first submitted project.",
+                    "type": "string"
+                },
+                "update_date": {
+                    "description": "When project was last updated.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updater_id": {
+                    "description": "ID of individual who last updated project.",
+                    "type": "string"
+                },
+                "document_id": {
+                    "description": "Identifier for document.",
+                    "type": "string",
+                    "pattern": ".{8}-.{4}-.{4}-.{4}-.{12}",
+                    "comment": "This structure supports the current ingest API. It may change in the future."
+                },
+                "accession": {
+                    "description": "A unique accession for this entity, provided by the broker.",
+                    "type": "string"
+                }
+            }
+        },
+        "biomaterial_core": {
+            "description": "Information about any biological material that was generated/used in the project including everything from a whole organism to subcellular components.",
+            "required": [
+                "biomaterial_id",
+                "ncbi_taxon_id"
+            ],
+            "title": "Biomaterial core",
+            "name": "biomaterial_core",
+            "type": "object",
+            "properties": {
+                "biomaterial_id": {
+                    "description": "A unique ID for the biomaterial.",
+                    "type": "string",
+                    "user_friendly": "Biomaterial ID"
+                },
+                "biomaterial_name": {
+                    "description": "A short, descriptive name for the biomaterial that need not be unique.",
+                    "type": "string",
+                    "user_friendly": "Biomaterial name"
+                },
+                "biomaterial_description": {
+                    "description": "A general description of the biomaterial.",
+                    "type": "string",
+                    "user_friendly": "Biomaterial description"
+                },
+                "ncbi_taxon_id": {
+                    "description": "A taxonomy ID (taxonID) from NCBI.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "user_friendly": "NCBI taxon ID",
+                    "example": 9606
+                },
+                "genotype": {
+                    "description": "Genotype of the biomaterial.",
+                    "type": "string",
+                    "user_friendly": "Genotype",
+                    "example": "DRB1 0401 protective allele; HLA-B*3901 allele"
+                },
+                "supplementary_files": {
+                    "description": "A list of filenames of biomaterial-level supplementary files.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "user_friendly": "Supplementary files"
+                },
+                "biosd_biomaterial": {
+                    "description": "A BioSamples ID.",
+                    "type": "string",
+                    "pattern": "^SAM(D|N|E([AG]?))[0-9]+$",
+                    "user_friendly": "BioSamples ID",
+                    "example": "SAMN00000000",
+                    "guidelines": "Enter ID if sample has been archived. ID can be from the DDBJ, NCBI, or EMBL-EBI and must start with SAMD, SAMN, or SAME, respectively."
+                },
+                "insdc_biomaterial": {
+                    "description": "An International Nucleotide Sequence Database Collaboration (INSDC) sample accession.",
+                    "type": "string",
+                    "pattern": "^[D|E|S]RS[0-9]+$",
+                    "user_friendly": "INSDC ID",
+                    "example": "SRS0000000",
+                    "guidelines": "Enter accession if sample has been archived. Accession can be from the DDBJ, NCBI, or EMBL-EBI and must start with DRS, SRS, or ERS, respecitvely."
+                }
+            }
+        },
+        "genus_species": {
+            "description": "The scientific binomial name for the species of the organoid.",
+            "type": "array",
+            "items": {
+                "description": "A term that may be associated with a species-related ontology term",
+                "required": [
+                    "text"
+                ],
+                "title": "Species ontology",
+                "name": "species_ontology",
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "description": "The name of the species to which the organism belongs.",
+                        "type": "string",
+                        "example": "Homo sapiens; Mus musculus",
+                        "user_friendly": "Species"
+                    },
+                    "ontology": {
+                        "description": "An ontology term identifier in the form prefix:accession",
+                        "type": "string",
+                        "graph_restriction": {
+                            "ontologies": [
+                                "obo:efo",
+                                "obo:NCBITaxon"
+                            ],
+                            "classes": [
+                                "OBI:0100026",
+                                "NCBITaxon:2759"
+                            ],
+                            "relations": [
+                                "rdfs:subClassOf"
+                            ],
+                            "direct": false,
+                            "include_self": false
+                        },
+                        "example": "NCBITaxon:9606; NCBITaxon:10090",
+                        "user_friendly": "Species ontology ID"
+                    },
+                    "ontology_label": {
+                        "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                        "type": "string",
+                        "example": "Homo sapiens; Mus musculus",
+                        "user_friendly": "Species ontology label"
+                    }
+                }
+            },
+            "user_friendly": "Genus species"
+        },
+        "model_for_organ": {
+            "description": "A term that may be associated with an anatomy-related ontology term.",
+            "required": [
+                "text"
+            ],
+            "title": "Organ ontology",
+            "name": "organ_ontology",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "description": "The text for the term as the user provides it.",
+                    "type": "string",
+                    "user_friendly": "Organ",
+                    "example": "heart; immune system"
+                },
+                "ontology": {
+                    "description": "A term from the ontology [UBERON](https://www.ebi.ac.uk/ols/ontologies/uberon) for an organ or a cellular bodily fluid such as blood or lymph.",
+                    "type": "string",
+                    "graph_restriction": {
+                        "ontologies": [
+                            "obo:hcao",
+                            "obo:uberon"
+                        ],
+                        "classes": [
+                            "UBERON:0000465"
+                        ],
+                        "relations": [
+                            "rdfs:subClassOf"
+                        ],
+                        "direct": false,
+                        "include_self": true
+                    },
+                    "user_friendly": "Organ ontology ID",
+                    "example": "UBERON:0000948; UBERON:0002405"
+                },
+                "ontology_label": {
+                    "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                    "type": "string",
+                    "user_friendly": "Organ ontology label",
+                    "example": "heart; immune system"
+                }
+            }
+        },
+        "model_organ_part": {
+            "description": "A term that may be associated with an anatomy-related ontology term",
+            "required": [
+                "text"
+            ],
+            "title": "Organ part ontology",
+            "name": "organ_part_ontology",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "description": "The text for the term as the user provides it.",
+                    "type": "string",
+                    "user_friendly": "Organ part",
+                    "example": "bone marrow; islet of Langerhans"
+                },
+                "ontology": {
+                    "description": "A term for a specific part of an organ from the ontology [UBERON](https://www.ebi.ac.uk/ols/ontologies/uberon).",
+                    "type": "string",
+                    "graph_restriction": {
+                        "ontologies": [
+                            "obo:hcao",
+                            "obo:uberon"
+                        ],
+                        "classes": [
+                            "UBERON:0000465"
+                        ],
+                        "relations": [
+                            "rdfs:subClassOf"
+                        ],
+                        "direct": false,
+                        "include_self": true
+                    },
+                    "user_friendly": "Organ part ontology ID",
+                    "example": "UBERON:0002371; UBERON:0000006"
+                },
+                "ontology_label": {
+                    "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                    "type": "string",
+                    "user_friendly": "Organ part ontology label",
+                    "example": "bone marrow; islet of Langerhans"
+                }
+            }
+        },
+        "organoid_age": {
+            "description": "Age of the organoid in Age units measured from when cell aggregates started differentiating to desired organoid model.",
+            "type": "number",
+            "example": 55,
+            "user_friendly": "Age"
+        },
+        "organoid_age_unit": {
+            "description": "A term that may be associated with a time unit-related ontology term",
+            "required": [
+                "text"
+            ],
+            "title": "Time unit ontology",
+            "name": "time_unit_ontology",
+            "properties": {
+                "text": {
+                    "description": "The name of a time unit being used.",
+                    "type": "string",
+                    "example": "second; week",
+                    "user_friendly": "Time unit"
+                },
+                "ontology": {
+                    "description": "An ontology term identifier in the form prefix:accession",
+                    "type": "string",
+                    "graph_restriction": {
+                        "ontologies": [
+                            "obo:efo",
+                            "obo:uo"
+                        ],
+                        "classes": [
+                            "UO:0000003",
+                            "UO:0000149"
+                        ],
+                        "relations": [
+                            "rdfs:subClassOf"
+                        ],
+                        "direct": false,
+                        "include_self": false
+                    },
+                    "example": "UO:0000010; UO:0000034",
+                    "user_friendly": "Time unit ontology ID"
+                },
+                "ontology_label": {
+                    "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                    "type": "string",
+                    "example": "second; week",
+                    "user_friendly": "Time unit ontology label"
+                }
+            },
+            "type": "object"
+        },
+        "organoid_size": {
+            "description": "Size of the organoid in Organoid size unit.",
+            "type": "number",
+            "example": 4,
+            "user_friendly": "Organoid size"
+        },
+        "organoid_size_unit": {
+            "description": "A term that may be associated with a cell type-related ontology term",
+            "required": [
+                "text"
+            ],
+            "title": "Length unit ontology",
+            "name": "length_unit_ontology",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "description": "The name of a length unit being used.",
+                    "type": "string",
+                    "user_friendly": "Length unit",
+                    "example": "micrometer; meter"
+                },
+                "ontology": {
+                    "description": "An ontology term identifier in the form prefix:accession",
+                    "type": "string",
+                    "graph_restriction": {
+                        "ontologies": [
+                            "obo:efo",
+                            "obo:uo"
+                        ],
+                        "classes": [
+                            "UO:0000001"
+                        ],
+                        "relations": [
+                            "rdfs:subClassOf"
+                        ],
+                        "direct": false,
+                        "include_self": false
+                    },
+                    "user_friendly": "Length unit ontology ID",
+                    "example": "UO:0000017; UO:0000008"
+                },
+                "ontology_label": {
+                    "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                    "type": "string",
+                    "user_friendly": "Length unit ontology label",
+                    "example": "micrometer; meter"
+                }
+            }
+        },
+        "organoid_morphology": {
+            "description": "General description of the organoid morphology.",
+            "type": "string",
+            "example": "Epithelial monolayer with budding crypt-like domains, Optic cup structure",
+            "user_frinedly": "Organoid morphology"
+        },
+        "organoid_type": {
+            "description": "The type of organoid.",
+            "type": "string",
+            "enum": [
+                "primary",
+                "immortalized",
+                "stem cell-derived",
+                "synthetic"
+            ],
+            "example": "Should be one of: primary, immortalized, stem cell-derived, or synthetic.",
+            "user_friendly": "Organoid type"
+        },
+        "embedded_in_matrigel": {
+            "description": "Whether the organoid is embedded in a matrigel.",
+            "type": "boolean",
+            "example": "Should be one of: yes, no.",
+            "user_friendly": "Organoid embeddded in matrigel?"
+        },
+        "organoid_growth_environment": {
+            "description": "Growth environment in which the organoid is grown.",
+            "type": "string",
+            "example": "matrigel, liquid suspension, adherent",
+            "user_friendly": "Organoid growth environment"
+        },
+        "input_aggregate_cell_count": {
+            "description": "Estimated number of cells per input cell aggregate.",
+            "type": "number",
+            "example": 10000,
+            "user_friendly": "Input aggregate cell count"
+        },
+        "organoid_stored_oxygen_levels": {
+            "description": "Percent oxygen level organoid was stored in prior to sequencing.",
+            "type": "number",
+            "example": 75,
+            "user_friendly": "Organoid stored oxygen level"
+        }
+    }
+}

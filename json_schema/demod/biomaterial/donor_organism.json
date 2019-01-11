@@ -1,0 +1,860 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://schema.dev.data.humancellatlas.org/type/biomaterial/12.0.4/donor_organism",
+    "description": "Information about the donor organism from which a specimen was collected.",
+    "additionalProperties": false,
+    "required": [
+        "describedBy",
+        "schema_type",
+        "biomaterial_core",
+        "is_living",
+        "sex",
+        "development_stage"
+    ],
+    "title": "Donor organism",
+    "name": "donor_organism",
+    "type": "object",
+    "properties": {
+        "describedBy": {
+            "description": "The URL reference to the schema.",
+            "type": "string",
+            "pattern": "^(http|https)://schema.(.*?)humancellatlas.org/type/biomaterial/(([0-9]{1,}.[0-9]{1,}.[0-9]{1,})|([a-zA-Z]*?))/donor_organism"
+        },
+        "schema_version": {
+            "description": "The version number of the schema in major.minor.patch format.",
+            "type": "string",
+            "pattern": "^[0-9]{1,}.[0-9]{1,}.[0-9]{1,}$",
+            "example": "4.6.1"
+        },
+        "schema_type": {
+            "description": "The type of the metadata schema entity.",
+            "type": "string",
+            "enum": [
+                "biomaterial"
+            ]
+        },
+        "provenance": {
+            "description": "Provenance information added or generated at time of ingest.",
+            "required": [
+                "document_id",
+                "submission_date"
+            ],
+            "title": "Provenance",
+            "name": "provenance",
+            "type": "object",
+            "properties": {
+                "submission_date": {
+                    "description": "When project was first submitted to database.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "submitter_id": {
+                    "description": "ID of individual who first submitted project.",
+                    "type": "string"
+                },
+                "update_date": {
+                    "description": "When project was last updated.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updater_id": {
+                    "description": "ID of individual who last updated project.",
+                    "type": "string"
+                },
+                "document_id": {
+                    "description": "Identifier for document.",
+                    "type": "string",
+                    "pattern": ".{8}-.{4}-.{4}-.{4}-.{12}",
+                    "comment": "This structure supports the current ingest API. It may change in the future."
+                },
+                "accession": {
+                    "description": "A unique accession for this entity, provided by the broker.",
+                    "type": "string"
+                }
+            }
+        },
+        "biomaterial_core": {
+            "description": "Information about any biological material that was generated/used in the project including everything from a whole organism to subcellular components.",
+            "required": [
+                "biomaterial_id",
+                "ncbi_taxon_id"
+            ],
+            "title": "Biomaterial core",
+            "name": "biomaterial_core",
+            "type": "object",
+            "properties": {
+                "biomaterial_id": {
+                    "description": "A unique ID for the biomaterial.",
+                    "type": "string",
+                    "user_friendly": "Biomaterial ID"
+                },
+                "biomaterial_name": {
+                    "description": "A short, descriptive name for the biomaterial that need not be unique.",
+                    "type": "string",
+                    "user_friendly": "Biomaterial name"
+                },
+                "biomaterial_description": {
+                    "description": "A general description of the biomaterial.",
+                    "type": "string",
+                    "user_friendly": "Biomaterial description"
+                },
+                "ncbi_taxon_id": {
+                    "description": "A taxonomy ID (taxonID) from NCBI.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "user_friendly": "NCBI taxon ID",
+                    "example": 9606
+                },
+                "genotype": {
+                    "description": "Genotype of the biomaterial.",
+                    "type": "string",
+                    "user_friendly": "Genotype",
+                    "example": "DRB1 0401 protective allele; HLA-B*3901 allele"
+                },
+                "supplementary_files": {
+                    "description": "A list of filenames of biomaterial-level supplementary files.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "user_friendly": "Supplementary files"
+                },
+                "biosd_biomaterial": {
+                    "description": "A BioSamples ID.",
+                    "type": "string",
+                    "pattern": "^SAM(D|N|E([AG]?))[0-9]+$",
+                    "user_friendly": "BioSamples ID",
+                    "example": "SAMN00000000",
+                    "guidelines": "Enter ID if sample has been archived. ID can be from the DDBJ, NCBI, or EMBL-EBI and must start with SAMD, SAMN, or SAME, respectively."
+                },
+                "insdc_biomaterial": {
+                    "description": "An International Nucleotide Sequence Database Collaboration (INSDC) sample accession.",
+                    "type": "string",
+                    "pattern": "^[D|E|S]RS[0-9]+$",
+                    "user_friendly": "INSDC ID",
+                    "example": "SRS0000000",
+                    "guidelines": "Enter accession if sample has been archived. Accession can be from the DDBJ, NCBI, or EMBL-EBI and must start with DRS, SRS, or ERS, respecitvely."
+                }
+            }
+        },
+        "human_specific": {
+            "description": "Information specific to a donor that is a human (Homo sapiens).",
+            "title": "Human-specific",
+            "name": "human_specific",
+            "type": "object",
+            "properties": {
+                "body_mass_index": {
+                    "description": "The body mass index of the donor.",
+                    "type": "number",
+                    "maximum": 100,
+                    "minimum": 5,
+                    "example": 36.4,
+                    "user_friendly": "Body mass index"
+                },
+                "ethnicity": {
+                    "description": "Ethnicity of the donor.",
+                    "type": "array",
+                    "items": {
+                        "description": "A term that may be associated with a ethnicity-related ontology term",
+                        "required": [
+                            "text"
+                        ],
+                        "title": "Ethnicity ontology",
+                        "name": "ethnicity_ontology",
+                        "type": "object",
+                        "properties": {
+                            "text": {
+                                "description": "The ethnicity of the human donor.",
+                                "type": "string",
+                                "user_friendly": "Ethnicity",
+                                "example": "European; Hispanic or Latin American"
+                            },
+                            "ontology": {
+                                "description": "An ontology term identifier in the form prefix:accession",
+                                "type": "string",
+                                "graph_restriction": {
+                                    "ontologies": [
+                                        "obo:hancestro"
+                                    ],
+                                    "classes": [
+                                        "HANCESTRO:0004"
+                                    ],
+                                    "relations": [
+                                        "rdfs:subClassOf"
+                                    ],
+                                    "direct": false,
+                                    "include_self": false
+                                },
+                                "user_friendly": "Ethnicity ontology ID",
+                                "example": "HANCESTRO_0005 ;HANCESTRO_0014"
+                            },
+                            "ontology_label": {
+                                "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                                "type": "string",
+                                "user_friendly": "Ethnicity ontology label",
+                                "example": "European; Hispanic or Latin American"
+                            }
+                        }
+                    },
+                    "user_friendly": "Ethnicity",
+                    "guidelines": "Enter one or more ethnicities, separated by a comma."
+                }
+            }
+        },
+        "mouse_specific": {
+            "description": "Information specific to an organism that is a mouse (Mus musculus).",
+            "title": "Mouse-specific",
+            "name": "mouse_specific",
+            "type": "object",
+            "properties": {
+                "strain": {
+                    "description": "The name of the mouse strain.",
+                    "type": "array",
+                    "items": {
+                        "description": "A term that may be associated with a strain-related ontology term",
+                        "required": [
+                            "text"
+                        ],
+                        "title": "Strain ontology",
+                        "name": "strain_ontology",
+                        "type": "object",
+                        "properties": {
+                            "text": {
+                                "description": "The name of the strain to which the organism belongs (mouse-specific).",
+                                "type": "string",
+                                "example": "C57BL/6; BALB/c",
+                                "user_friendly": "Strain"
+                            },
+                            "ontology": {
+                                "description": "An ontology term identifier in the form prefix:accession",
+                                "type": "string",
+                                "graph_restriction": {
+                                    "ontologies": [
+                                        "obo:efo",
+                                        "obo:NCBITaxon"
+                                    ],
+                                    "classes": [
+                                        "NCBITaxon:10090"
+                                    ],
+                                    "relations": [
+                                        "rdfs:subClassOf"
+                                    ],
+                                    "direct": false,
+                                    "include_self": true
+                                },
+                                "example": "EFO:0004472; EFO:0000602",
+                                "user_friendly": "Strain ontology ID"
+                            },
+                            "ontology_label": {
+                                "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                                "type": "string",
+                                "example": "C57BL/6; BALB/c",
+                                "user_friendly": "Strain ontology label"
+                            }
+                        }
+                    },
+                    "user_friendly": "Mouse strain"
+                }
+            }
+        },
+        "genus_species": {
+            "description": "The scientific binomial name for the species of the organism.",
+            "type": "array",
+            "items": {
+                "description": "A term that may be associated with a species-related ontology term",
+                "required": [
+                    "text"
+                ],
+                "title": "Species ontology",
+                "name": "species_ontology",
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "description": "The name of the species to which the organism belongs.",
+                        "type": "string",
+                        "example": "Homo sapiens; Mus musculus",
+                        "user_friendly": "Species"
+                    },
+                    "ontology": {
+                        "description": "An ontology term identifier in the form prefix:accession",
+                        "type": "string",
+                        "graph_restriction": {
+                            "ontologies": [
+                                "obo:efo",
+                                "obo:NCBITaxon"
+                            ],
+                            "classes": [
+                                "OBI:0100026",
+                                "NCBITaxon:2759"
+                            ],
+                            "relations": [
+                                "rdfs:subClassOf"
+                            ],
+                            "direct": false,
+                            "include_self": false
+                        },
+                        "example": "NCBITaxon:9606; NCBITaxon:10090",
+                        "user_friendly": "Species ontology ID"
+                    },
+                    "ontology_label": {
+                        "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                        "type": "string",
+                        "example": "Homo sapiens; Mus musculus",
+                        "user_friendly": "Species ontology label"
+                    }
+                }
+            },
+            "user_friendly": "Genus species"
+        },
+        "sex": {
+            "description": "The biological sex of the organism.",
+            "type": "string",
+            "enum": [
+                "female",
+                "male",
+                "mixed",
+                "unknown"
+            ],
+            "user_friendly": "Biological sex",
+            "example": "Should be one of: male, female, mixed, or unknown."
+        },
+        "is_living": {
+            "description": "Whether organism was alive at time of biomaterial collection.",
+            "type": "string",
+            "enum": [
+                "yes",
+                "no",
+                "unknown"
+            ],
+            "user_friendly": "Alive at collection?",
+            "example": "Should be one of: yes, no, unknown.",
+            "guidelines": "Enter yes if organism was alive at time of biomaterial collection, no if organism was dead, unknown if not known."
+        },
+        "organism_age": {
+            "description": "Age of organism in Age units measured since birth.",
+            "pattern": "^[0-9]+\\.?[0-9]*-?[0-9]*\\.?[0-9]*$",
+            "type": "string",
+            "user_friendly": "Age",
+            "example": "20, 45-65",
+            "guidelines": "Enter either a single value or a range of values. Indicate a range using a hyphen."
+        },
+        "organism_age_unit": {
+            "description": "A term that may be associated with a time unit-related ontology term",
+            "required": [
+                "text"
+            ],
+            "title": "Time unit ontology",
+            "name": "time_unit_ontology",
+            "properties": {
+                "text": {
+                    "description": "The name of a time unit being used.",
+                    "type": "string",
+                    "example": "second; week",
+                    "user_friendly": "Time unit"
+                },
+                "ontology": {
+                    "description": "An ontology term identifier in the form prefix:accession",
+                    "type": "string",
+                    "graph_restriction": {
+                        "ontologies": [
+                            "obo:efo",
+                            "obo:uo"
+                        ],
+                        "classes": [
+                            "UO:0000003",
+                            "UO:0000149"
+                        ],
+                        "relations": [
+                            "rdfs:subClassOf"
+                        ],
+                        "direct": false,
+                        "include_self": false
+                    },
+                    "example": "UO:0000010; UO:0000034",
+                    "user_friendly": "Time unit ontology ID"
+                },
+                "ontology_label": {
+                    "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                    "type": "string",
+                    "example": "second; week",
+                    "user_friendly": "Time unit ontology label"
+                }
+            },
+            "type": "object"
+        },
+        "development_stage": {
+            "description": "A term that may be associated with a development stage-related ontology term",
+            "required": [
+                "text"
+            ],
+            "title": "Development stage ontology",
+            "name": "development_stage_ontology",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "description": "The name of the development stage of the organism.",
+                    "type": "string",
+                    "user_friendly": "Development stage",
+                    "example": "human adult stage; Theiler stage 28"
+                },
+                "ontology": {
+                    "description": "An ontology term identifier in the form prefix:accession",
+                    "type": "string",
+                    "graph_restriction": {
+                        "ontologies": [
+                            "obo:efo",
+                            "obo:hcao"
+                        ],
+                        "classes": [
+                            "EFO:0000399",
+                            "HsapDv:0000000",
+                            "UBERON:0000105"
+                        ],
+                        "relations": [
+                            "rdfs:subClassOf"
+                        ],
+                        "direct": false,
+                        "include_self": false
+                    },
+                    "user_friendly": "Development stage ontology ID",
+                    "example": "HsapDv:0000087; EFO:0002588"
+                },
+                "ontology_label": {
+                    "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                    "type": "string",
+                    "user_friendly": "Development stage ontology label",
+                    "example": "human adult stage; Theiler stage 28"
+                }
+            }
+        },
+        "diseases": {
+            "description": "Short description of known disease(s) of the organism.",
+            "type": "array",
+            "items": {
+                "description": "A term that may be associated with a disease-related ontology term",
+                "required": [
+                    "text"
+                ],
+                "title": "Disease ontology",
+                "name": "disease_ontology",
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "description": "The text for the term as the user provides it.",
+                        "type": "string",
+                        "user_friendly": "Disease",
+                        "example": "type 2 diabetes mellitus; normal"
+                    },
+                    "ontology": {
+                        "description": "An optional ontology reference in format where prefix_ indicates which ontology",
+                        "type": "string",
+                        "graph_restriction": {
+                            "ontologies": [
+                                "obo:mondo",
+                                "obo:efo"
+                            ],
+                            "classes": [
+                                "MONDO:0000001",
+                                "PATO:0000461"
+                            ],
+                            "relations": [
+                                "rdfs:subClassOf"
+                            ],
+                            "direct": false,
+                            "include_self": true
+                        },
+                        "user_friendly": "Disease ontology ID",
+                        "example": "MONDO:0005148; PATO:0000461"
+                    },
+                    "ontology_label": {
+                        "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                        "type": "string",
+                        "user_friendly": "Disease ontology label",
+                        "example": "type 2 diabetes mellitus; normal"
+                    }
+                }
+            },
+            "user_friendly": "Known disease(s)",
+            "guidelines": "Enter 'normal' if no known disease."
+        },
+        "death": {
+            "description": "Information relating to the death of an organism.",
+            "required": [
+                "cause_of_death"
+            ],
+            "title": "Death",
+            "name": "death",
+            "type": "object",
+            "properties": {
+                "cause_of_death": {
+                    "description": "Conditions resulting in death.",
+                    "type": "string",
+                    "user_friendly": "Cause of death",
+                    "example": "Hypoxic brain damage; Sudden cardiac arrest",
+                    "guidelines": "Determined from death report for human donor or from research lab for mouse."
+                },
+                "cold_perfused": {
+                    "description": "Whether perfusion with cold fluid was used to help preserve tissues before heart stopped.",
+                    "type": "boolean",
+                    "user_friendly": "Cold perfused?",
+                    "example": "Should be one of: yes, no.",
+                    "guidelines": "Enter yes if cold perfused. Otherwise, enter no."
+                },
+                "days_on_ventilator": {
+                    "description": "Number of days on ventilator before death occurred.",
+                    "maximum": 10000,
+                    "minimum": 0,
+                    "type": "number",
+                    "example": 4,
+                    "user_friendly": "Number of days on ventilator"
+                },
+                "hardy_scale": {
+                    "description": "Value on 4-point Hardy scale cause of death classification.",
+                    "maximum": 4,
+                    "minimum": 0,
+                    "type": "integer",
+                    "example": 0,
+                    "user_friendly": "Value on Hardy scale",
+                    "guidelines": "Enter: 0 for ventilator case, 1 for violent and fast death, 2 for fast death of natural causes, 3 for intermediate death, or 4 for slow death."
+                },
+                "time_of_death": {
+                    "description": "Date and time when death was declared.",
+                    "format": "date-time",
+                    "type": "string",
+                    "user_friendly": "Time of death",
+                    "example": "2016-01-21T00:00:00Z",
+                    "guidelines": "Enter the time in date-time format: yyyy-mm-ddThh:mm:ssZ."
+                },
+                "organ_donation_death_type": {
+                    "description": "Type of death preceding organ donation.",
+                    "type": "string",
+                    "enum": [
+                        "Donation after circulatory death (DCD)",
+                        "Donation after brainstem death (DBD)"
+                    ],
+                    "user_friendly": "Organ donation death type",
+                    "example": "Should be one of: Donation after circulatory death (DCD), or Donation after brainstem death (DBD).",
+                    "guidelines": "Enter value for organ donors only."
+                },
+                "normothermic_regional_perfusion": {
+                    "description": "Whether entire body was perfused with warm oxygenated blood.",
+                    "type": "string",
+                    "enum": [
+                        "yes",
+                        "no",
+                        "unknown"
+                    ],
+                    "user_friendly": "Normothermic regional perfusion?",
+                    "example": "Should be one of: yes, no, or unknown.",
+                    "guidelines": "Enter yes if entire body (but not limbs) was perfused with warm oxygenated blood. Otherwise, enter no."
+                }
+            }
+        },
+        "familial_relationship": {
+            "description": "Information about other organisms related to this organism.",
+            "type": "array",
+            "items": {
+                "description": "Information about other organisms that this organism is related to.",
+                "title": "Familial relationship",
+                "name": "familial_relationship",
+                "type": "object",
+                "properties": {
+                    "parent": {
+                        "description": "The individual's parent.",
+                        "type": "string",
+                        "user_friendly": "Parent",
+                        "guidelines": "Enter the ID of the parent of this individual."
+                    },
+                    "child": {
+                        "description": "The individual's child.",
+                        "type": "string",
+                        "user_friendly": "Child",
+                        "guidelines": "Enter the ID of the child of this individual."
+                    },
+                    "sibling": {
+                        "description": "The individual's sibling.",
+                        "type": "string",
+                        "user_friendly": "Sibling",
+                        "guidelines": "Enter the ID of the sibling of this individual."
+                    }
+                }
+            },
+            "user_friendly": "Familial relationship"
+        },
+        "medical_history": {
+            "description": "Information about the medical history of a donor.",
+            "title": "Medical history",
+            "name": "medical_history",
+            "type": "object",
+            "properties": {
+                "alcohol_history": {
+                    "description": "Estimated amount of alcohol consumed per day.",
+                    "type": "string",
+                    "user_friendly": "Alcohol history",
+                    "example": "3-6 alcohol units/day; 1 drink per day",
+                    "guidelines": "Enter the amount consumed per day using units such as alcohol units (10mL or 8g of alcohol) or drinks (14g of alcohol)."
+                },
+                "medication": {
+                    "description": "Medications the individual was taking at time of biomaterial collection.",
+                    "type": "string",
+                    "user_friendly": "Medications",
+                    "example": "Naproxen 500mg/day; Citalopram 20mg/day",
+                    "guidelines": "Enter the medication and dosage. Separate multiple medications with commas."
+                },
+                "smoking_history": {
+                    "description": "Estimated number of cigarettes smoked per day.",
+                    "type": "string",
+                    "user_friendly": "Smoking history",
+                    "example": "20 cigarettes/day for 25 years, stopped 2000",
+                    "guidelines": "Enter an estimated number of cigarettes smoked per day and for how many years."
+                },
+                "nutritional_state": {
+                    "description": "Nutritional state of individual at time of biomaterial collection.",
+                    "type": "string",
+                    "enum": [
+                        "normal",
+                        "fasting",
+                        "feeding tube removed"
+                    ],
+                    "user_friendly": "Nutritional state",
+                    "example": "Should be one of: normal, fasting, or feeding tube removed."
+                },
+                "test_results": {
+                    "description": "Results from medical tests performed on the individual.",
+                    "type": "string",
+                    "user_friendly": "Test results"
+                },
+                "treatment": {
+                    "description": "Treatments the individual has undergone prior to biomaterial collection.",
+                    "type": "string",
+                    "user_friendly": "Treatments"
+                }
+            }
+        },
+        "gestational_age": {
+            "description": "Gestational age of organism in Gestational age units measured since fertilization.",
+            "pattern": "^[0-9]+\\.?[0-9]*-?[0-9]*\\.?[0-9]*$",
+            "type": "string",
+            "user_friendly": "Gestational age",
+            "example": "22, 5-7",
+            "guidelines": "Enter either a single value or a range of values. Indicate a range using a hyphen."
+        },
+        "gestational_age_unit": {
+            "description": "A term that may be associated with a time unit-related ontology term",
+            "required": [
+                "text"
+            ],
+            "title": "Time unit ontology",
+            "name": "time_unit_ontology",
+            "properties": {
+                "text": {
+                    "description": "The name of a time unit being used.",
+                    "type": "string",
+                    "example": "second; week",
+                    "user_friendly": "Time unit"
+                },
+                "ontology": {
+                    "description": "An ontology term identifier in the form prefix:accession",
+                    "type": "string",
+                    "graph_restriction": {
+                        "ontologies": [
+                            "obo:efo",
+                            "obo:uo"
+                        ],
+                        "classes": [
+                            "UO:0000003",
+                            "UO:0000149"
+                        ],
+                        "relations": [
+                            "rdfs:subClassOf"
+                        ],
+                        "direct": false,
+                        "include_self": false
+                    },
+                    "example": "UO:0000010; UO:0000034",
+                    "user_friendly": "Time unit ontology ID"
+                },
+                "ontology_label": {
+                    "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                    "type": "string",
+                    "example": "second; week",
+                    "user_friendly": "Time unit ontology label"
+                }
+            },
+            "type": "object"
+        },
+        "height": {
+            "description": "Height of organism in Height unit.",
+            "pattern": "^[0-9]+\\.?[0-9]*-?[0-9]*\\.?[0-9]*$",
+            "type": "string",
+            "user_friendly": "Height",
+            "example": "160, 120-140",
+            "guidelines": "Enter either a single value or a range of values. Indicate a range using a hyphen."
+        },
+        "height_unit": {
+            "description": "A term that may be associated with a cell type-related ontology term",
+            "required": [
+                "text"
+            ],
+            "title": "Length unit ontology",
+            "name": "length_unit_ontology",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "description": "The name of a length unit being used.",
+                    "type": "string",
+                    "user_friendly": "Length unit",
+                    "example": "micrometer; meter"
+                },
+                "ontology": {
+                    "description": "An ontology term identifier in the form prefix:accession",
+                    "type": "string",
+                    "graph_restriction": {
+                        "ontologies": [
+                            "obo:efo",
+                            "obo:uo"
+                        ],
+                        "classes": [
+                            "UO:0000001"
+                        ],
+                        "relations": [
+                            "rdfs:subClassOf"
+                        ],
+                        "direct": false,
+                        "include_self": false
+                    },
+                    "user_friendly": "Length unit ontology ID",
+                    "example": "UO:0000017; UO:0000008"
+                },
+                "ontology_label": {
+                    "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                    "type": "string",
+                    "user_friendly": "Length unit ontology label",
+                    "example": "micrometer; meter"
+                }
+            }
+        },
+        "weight": {
+            "description": "Weight of organism in Weight unit.",
+            "pattern": "^[0-9]+\\.?[0-9]*-?[0-9]*\\.?[0-9]*$",
+            "type": "string",
+            "user_friendly": "Weight",
+            "example": "60, 40-60",
+            "guidelines": "Enter either a single value or a range of values. Indicate a range using a hyphen."
+        },
+        "weight_unit": {
+            "description": "A term that may be associated with a cell type-related ontology term",
+            "required": [
+                "text"
+            ],
+            "title": "Mass unit ontology",
+            "name": "mass_unit_ontology",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "description": "The name of a mass unit being used.",
+                    "type": "string",
+                    "user_friendly": "Mass unit",
+                    "example": "kilogram; microgram"
+                },
+                "ontology": {
+                    "description": "An ontology term identifier in the form prefix:accession",
+                    "type": "string",
+                    "graph_restriction": {
+                        "ontologies": [
+                            "obo:efo",
+                            "obo:uo"
+                        ],
+                        "classes": [
+                            "UO:0000002"
+                        ],
+                        "relations": [
+                            "rdfs:subClassOf"
+                        ],
+                        "direct": false,
+                        "include_self": false
+                    },
+                    "user_friendly": "Mass unit ontology ID",
+                    "example": "UO:0000009; UO:0000023"
+                },
+                "ontology_label": {
+                    "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                    "type": "string",
+                    "user_friendly": "Mass unit ontology label",
+                    "example": "kilogram; microgram"
+                }
+            }
+        },
+        "timecourse": {
+            "description": "Information relating to a timecourse.",
+            "required": [
+                "timecourse_value",
+                "timecourse_unit"
+            ],
+            "title": "Timecourse",
+            "name": "timecourse",
+            "type": "object",
+            "properties": {
+                "timecourse_value": {
+                    "description": "The numerical value in Timecourse unit associated with a time interval used in the experiment.",
+                    "pattern": "^[0-9]+\\.?[0-9]*-?[0-9]*\\.?[0-9]*$",
+                    "type": "string",
+                    "example": "2",
+                    "user_friendly": "Timecourse value"
+                },
+                "timecourse_unit": {
+                    "description": "A term that may be associated with a time unit-related ontology term",
+                    "required": [
+                        "text"
+                    ],
+                    "title": "Time unit ontology",
+                    "name": "time_unit_ontology",
+                    "properties": {
+                        "text": {
+                            "description": "The name of a time unit being used.",
+                            "type": "string",
+                            "example": "second; week",
+                            "user_friendly": "Time unit"
+                        },
+                        "ontology": {
+                            "description": "An ontology term identifier in the form prefix:accession",
+                            "type": "string",
+                            "graph_restriction": {
+                                "ontologies": [
+                                    "obo:efo",
+                                    "obo:uo"
+                                ],
+                                "classes": [
+                                    "UO:0000003",
+                                    "UO:0000149"
+                                ],
+                                "relations": [
+                                    "rdfs:subClassOf"
+                                ],
+                                "direct": false,
+                                "include_self": false
+                            },
+                            "example": "UO:0000010; UO:0000034",
+                            "user_friendly": "Time unit ontology ID"
+                        },
+                        "ontology_label": {
+                            "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                            "type": "string",
+                            "example": "second; week",
+                            "user_friendly": "Time unit ontology label"
+                        }
+                    },
+                    "type": "object"
+                },
+                "timecourse_relevance": {
+                    "description": "Relevance of the Timecourse value/unit to the experiment.",
+                    "type": "string",
+                    "example": "Collection after tumor cells injected into the mammary gland.",
+                    "user_friendly": "Timecourse relevance"
+                }
+            }
+        }
+    }
+}

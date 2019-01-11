@@ -1,0 +1,106 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://schema.dev.data.humancellatlas.org/type/file/5.3.5/analysis_file",
+    "description": "A file analysis results produced by a secondary analysis pipeline.",
+    "additionalProperties": false,
+    "required": [
+        "describedBy",
+        "schema_type",
+        "file_core"
+    ],
+    "title": "Analysis file",
+    "name": "analysis_file",
+    "type": "object",
+    "properties": {
+        "describedBy": {
+            "description": "The URL reference to the schema.",
+            "type": "string",
+            "pattern": "^(http|https)://schema.(.*?)humancellatlas.org/type/file/(([0-9]{1,}.[0-9]{1,}.[0-9]{1,})|([a-zA-Z]*?))/analysis_file"
+        },
+        "schema_version": {
+            "description": "The version number of the schema in major.minor.patch format.",
+            "type": "string",
+            "pattern": "^[0-9]{1,}.[0-9]{1,}.[0-9]{1,}$",
+            "example": "4.6.1"
+        },
+        "schema_type": {
+            "description": "The type of the metadata schema entity.",
+            "type": "string",
+            "enum": [
+                "file"
+            ]
+        },
+        "provenance": {
+            "description": "Provenance information added or generated at time of ingest.",
+            "required": [
+                "document_id",
+                "submission_date"
+            ],
+            "title": "Provenance",
+            "name": "provenance",
+            "type": "object",
+            "properties": {
+                "submission_date": {
+                    "description": "When project was first submitted to database.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "submitter_id": {
+                    "description": "ID of individual who first submitted project.",
+                    "type": "string"
+                },
+                "update_date": {
+                    "description": "When project was last updated.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updater_id": {
+                    "description": "ID of individual who last updated project.",
+                    "type": "string"
+                },
+                "document_id": {
+                    "description": "Identifier for document.",
+                    "type": "string",
+                    "pattern": ".{8}-.{4}-.{4}-.{4}-.{12}",
+                    "comment": "This structure supports the current ingest API. It may change in the future."
+                },
+                "accession": {
+                    "description": "A unique accession for this entity, provided by the broker.",
+                    "type": "string"
+                }
+            }
+        },
+        "file_core": {
+            "description": "Information about a file produced from any process.",
+            "required": [
+                "file_name",
+                "file_format"
+            ],
+            "title": "File core",
+            "name": "file_core",
+            "type": "object",
+            "properties": {
+                "file_name": {
+                    "description": "The name of the file.",
+                    "type": "string",
+                    "user_friendly": "File name",
+                    "guidelines": "Include the file extension in the file name.",
+                    "example": "R1.fastq.gz; codebook.json"
+                },
+                "file_format": {
+                    "description": "The format of the file.",
+                    "type": "string",
+                    "user_friendly": "File format",
+                    "guidelines": "Indicate the full file extension including compression extensions.",
+                    "example": "fastq.gz; tif"
+                },
+                "checksum": {
+                    "description": "MD5 checksum of the file.",
+                    "type": "string",
+                    "user_friendly": "Checksum",
+                    "example": "e09a986c2e630130b1849d4bf9a94c06"
+                }
+            }
+        }
+    }
+}

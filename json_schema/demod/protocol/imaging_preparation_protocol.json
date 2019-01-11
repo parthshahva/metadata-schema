@@ -1,0 +1,343 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://schema.dev.data.humancellatlas.org/type/protocol/imaging/1.0.4/imaging_preparation_protocol",
+    "description": "Information about the preparation protocol of the imaged specimen used in an imaging experiment",
+    "additionalProperties": false,
+    "required": [
+        "describedBy",
+        "schema_type",
+        "protocol_core"
+    ],
+    "title": "Imaging preparation protocol",
+    "name": "imaging_preparation_protocol",
+    "type": "object",
+    "properties": {
+        "describedBy": {
+            "description": "The URL reference to the schema.",
+            "type": "string",
+            "pattern": "^(http|https)://schema.(.*?)humancellatlas.org/type/protocol/imaging/(([0-9]{1,}.[0-9]{1,}.[0-9]{1,})|([a-zA-Z]*?))/imaging_preparation_protocol"
+        },
+        "schema_version": {
+            "description": "The version number of the schema in major.minor.patch format.",
+            "type": "string",
+            "pattern": "^[0-9]{1,}.[0-9]{1,}.[0-9]{1,}$",
+            "example": "4.6.1"
+        },
+        "schema_type": {
+            "description": "The type of the metadata schema entity.",
+            "type": "string",
+            "enum": [
+                "protocol"
+            ]
+        },
+        "provenance": {
+            "description": "Provenance information added or generated at time of ingest.",
+            "required": [
+                "document_id",
+                "submission_date"
+            ],
+            "title": "Provenance",
+            "name": "provenance",
+            "type": "object",
+            "properties": {
+                "submission_date": {
+                    "description": "When project was first submitted to database.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "submitter_id": {
+                    "description": "ID of individual who first submitted project.",
+                    "type": "string"
+                },
+                "update_date": {
+                    "description": "When project was last updated.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updater_id": {
+                    "description": "ID of individual who last updated project.",
+                    "type": "string"
+                },
+                "document_id": {
+                    "description": "Identifier for document.",
+                    "type": "string",
+                    "pattern": ".{8}-.{4}-.{4}-.{4}-.{12}",
+                    "comment": "This structure supports the current ingest API. It may change in the future."
+                },
+                "accession": {
+                    "description": "A unique accession for this entity, provided by the broker.",
+                    "type": "string"
+                }
+            }
+        },
+        "protocol_core": {
+            "description": "Information about an intended protocol that was followed in the project.",
+            "required": [
+                "protocol_id"
+            ],
+            "title": "Protocol core",
+            "name": "protocol_core",
+            "type": "object",
+            "properties": {
+                "protocol_id": {
+                    "description": "A unique ID for the protocol.",
+                    "type": "string",
+                    "user_friendly": "Protocol ID",
+                    "guidelines": "Protocol ID should have no spaces."
+                },
+                "protocol_name": {
+                    "description": "A short name for the protocol.",
+                    "type": "string",
+                    "user_friendly": "Protocol name"
+                },
+                "protocol_description": {
+                    "description": "A general description of the protocol.",
+                    "type": "string",
+                    "user_friendly": "Protocol description"
+                },
+                "publication_doi": {
+                    "description": "The publication digital object identifier (doi) for the protocol.",
+                    "type": "string",
+                    "example": "10.1101/193219",
+                    "user_friendly": "Publication DOI"
+                },
+                "protocols_io_doi": {
+                    "description": "The protocols.io digital object identifier (doi) for the protocol.",
+                    "type": "string",
+                    "example": "10.17504/protocols.io.mgjc3un",
+                    "user_friendly": "protocols.io DOI"
+                },
+                "document": {
+                    "description": "A filename of a PDF document containing the details of the protocol.",
+                    "type": "string",
+                    "pattern": "^.*.pdf$",
+                    "user_friendly": "Document filename",
+                    "example": "my_cool_protocol.pdf"
+                }
+            }
+        },
+        "fresh_slicing_method": {
+            "description": "The method by which fresh tissue was sliced (e.g. vibrotome)",
+            "type": "string",
+            "user_friendly": "Fresh slicing method",
+            "example": "vibrotome"
+        },
+        "imaged_slice_thickness": {
+            "description": "Thickness of the imaged slice in micrometres.",
+            "type": "number",
+            "example": "10",
+            "user_friendly": "Imaged slice thickness"
+        },
+        "final_slicing_method": {
+            "description": "The method by which the final slice was obtained (e.g. cryosectioning).",
+            "type": "string",
+            "user_friendly": "Final slicing method",
+            "example": "cryosectioning"
+        },
+        "post_resection_interval": {
+            "description": "Length of time between surgical resection and fresh slicing of tissue.",
+            "type": "number",
+            "user_friendly": "Time between resection and fresh slicing",
+            "example": "5"
+        },
+        "post_resection_interval_unit": {
+            "description": "A term that may be associated with a time unit-related ontology term",
+            "required": [
+                "text"
+            ],
+            "title": "Time unit ontology",
+            "name": "time_unit_ontology",
+            "properties": {
+                "text": {
+                    "description": "The name of a time unit being used.",
+                    "type": "string",
+                    "example": "second; week",
+                    "user_friendly": "Time unit"
+                },
+                "ontology": {
+                    "description": "An ontology term identifier in the form prefix:accession",
+                    "type": "string",
+                    "graph_restriction": {
+                        "ontologies": [
+                            "obo:efo",
+                            "obo:uo"
+                        ],
+                        "classes": [
+                            "UO:0000003",
+                            "UO:0000149"
+                        ],
+                        "relations": [
+                            "rdfs:subClassOf"
+                        ],
+                        "direct": false,
+                        "include_self": false
+                    },
+                    "example": "UO:0000010; UO:0000034",
+                    "user_friendly": "Time unit ontology ID"
+                },
+                "ontology_label": {
+                    "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                    "type": "string",
+                    "example": "second; week",
+                    "user_friendly": "Time unit ontology label"
+                }
+            },
+            "type": "object"
+        },
+        "pre_final_slice_preservation_method": {
+            "description": "Information relating to how a biomaterial was preserved and/or stored over a period of time.",
+            "title": "Preservation and storage",
+            "name": "preservation_storage",
+            "type": "object",
+            "properties": {
+                "storage_method": {
+                    "description": "The method by which a biomaterial was stored after preservation or before another protocol was used.",
+                    "type": "string",
+                    "enum": [
+                        "ambient temperature",
+                        "cut slide",
+                        "fresh",
+                        "frozen, -70C freezer",
+                        "frozen, -150C freezer",
+                        "frozen, liquid nitrogen",
+                        "frozen, vapor phase",
+                        "paraffin block",
+                        "RNAlater, frozen",
+                        "TRIzol, frozen"
+                    ],
+                    "example": "frozen, liquid nitrogen; fresh",
+                    "user_friendly": "Storage method"
+                },
+                "storage_time": {
+                    "description": "Length of time the biomaterial was stored for in Storage time units.",
+                    "type": "number",
+                    "example": 5,
+                    "user_friendly": "Storage time"
+                },
+                "storage_time_unit": {
+                    "description": "A term that may be associated with a time unit-related ontology term",
+                    "required": [
+                        "text"
+                    ],
+                    "title": "Time unit ontology",
+                    "name": "time_unit_ontology",
+                    "properties": {
+                        "text": {
+                            "description": "The name of a time unit being used.",
+                            "type": "string",
+                            "example": "second; week",
+                            "user_friendly": "Time unit"
+                        },
+                        "ontology": {
+                            "description": "An ontology term identifier in the form prefix:accession",
+                            "type": "string",
+                            "graph_restriction": {
+                                "ontologies": [
+                                    "obo:efo",
+                                    "obo:uo"
+                                ],
+                                "classes": [
+                                    "UO:0000003",
+                                    "UO:0000149"
+                                ],
+                                "relations": [
+                                    "rdfs:subClassOf"
+                                ],
+                                "direct": false,
+                                "include_self": false
+                            },
+                            "example": "UO:0000010; UO:0000034",
+                            "user_friendly": "Time unit ontology ID"
+                        },
+                        "ontology_label": {
+                            "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                            "type": "string",
+                            "example": "second; week",
+                            "user_friendly": "Time unit ontology label"
+                        }
+                    },
+                    "type": "object"
+                },
+                "preservation_method": {
+                    "description": "The method by which a biomaterial was preserved through the use of chemicals, cold, or other means to prevent or retard biological or physical deterioration.",
+                    "type": "string",
+                    "enum": [
+                        "cryopreservation in liquid nitrogen (dead tissue)",
+                        "cryopreservation in dry ice (dead tissue)",
+                        "cryopreservation of live cells in liquid nitrogen",
+                        "cryopreservation, other",
+                        "formalin fixed, unbuffered",
+                        "formalin fixed, buffered",
+                        "formalin fixed and paraffin embedded",
+                        "fresh"
+                    ],
+                    "example": "cryopreservation in liquid nitrogen (dead tissue); fresh",
+                    "user_friendly": "Preservation method",
+                    "guidelines": "Enter 'fresh' if not preserved."
+                }
+            }
+        },
+        "post_final_slicing_interval": {
+            "description": "Length of time between secondary slicing and hybridization.",
+            "type": "number",
+            "example": "7",
+            "user_friendly": "Post final slicing interval"
+        },
+        "post_final_slicing_interval_unit": {
+            "description": "A term that may be associated with a time unit-related ontology term",
+            "required": [
+                "text"
+            ],
+            "title": "Time unit ontology",
+            "name": "time_unit_ontology",
+            "properties": {
+                "text": {
+                    "description": "The name of a time unit being used.",
+                    "type": "string",
+                    "example": "second; week",
+                    "user_friendly": "Time unit"
+                },
+                "ontology": {
+                    "description": "An ontology term identifier in the form prefix:accession",
+                    "type": "string",
+                    "graph_restriction": {
+                        "ontologies": [
+                            "obo:efo",
+                            "obo:uo"
+                        ],
+                        "classes": [
+                            "UO:0000003",
+                            "UO:0000149"
+                        ],
+                        "relations": [
+                            "rdfs:subClassOf"
+                        ],
+                        "direct": false,
+                        "include_self": false
+                    },
+                    "example": "UO:0000010; UO:0000034",
+                    "user_friendly": "Time unit ontology ID"
+                },
+                "ontology_label": {
+                    "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                    "type": "string",
+                    "example": "second; week",
+                    "user_friendly": "Time unit ontology label"
+                }
+            },
+            "type": "object"
+        },
+        "fiducial_marker": {
+            "description": "Fiducial markers for the alignment of images taken across multiple rounds of imaging.",
+            "type": "string",
+            "user_friendly": "Fiducial marker",
+            "example": "beads"
+        },
+        "expansion_factor": {
+            "description": "Factor by which the imaged tissue was expanded.",
+            "type": "number",
+            "example": "3",
+            "user_friendly": "Expansion factor"
+        }
+    }
+}

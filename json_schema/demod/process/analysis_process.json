@@ -1,0 +1,466 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://schema.dev.data.humancellatlas.org/type/process/analysis/8.0.6/analysis_process",
+    "description": "Information about the analysis process",
+    "additionalProperties": false,
+    "required": [
+        "describedBy",
+        "schema_type",
+        "process_core",
+        "process_type",
+        "timestamp_start_utc",
+        "timestamp_stop_utc",
+        "input_bundles",
+        "reference_bundle",
+        "tasks",
+        "inputs",
+        "outputs",
+        "analysis_run_type"
+    ],
+    "title": "Analysis process",
+    "name": "analysis_process",
+    "type": "object",
+    "definitions": {
+        "task": {
+            "additionalProperties": false,
+            "required": [
+                "task_name",
+                "start_time",
+                "stop_time",
+                "disk_size",
+                "docker_image",
+                "cpus",
+                "memory",
+                "zone"
+            ],
+            "type": "object",
+            "properties": {
+                "disk_size": {
+                    "type": "string"
+                },
+                "task_name": {
+                    "type": "string"
+                },
+                "zone": {
+                    "type": "string"
+                },
+                "log_err": {
+                    "type": "string"
+                },
+                "start_time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "cpus": {
+                    "type": "integer"
+                },
+                "log_out": {
+                    "type": "string"
+                },
+                "stop_time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "memory": {
+                    "type": "string"
+                },
+                "docker_image": {
+                    "type": "string"
+                }
+            }
+        },
+        "parameter": {
+            "additionalProperties": false,
+            "required": [
+                "parameter_name",
+                "parameter_value"
+            ],
+            "type": "object",
+            "properties": {
+                "checksum": {
+                    "type": "string"
+                },
+                "parameter_name": {
+                    "type": "string"
+                },
+                "parameter_value": {
+                    "description": "Path to file or setting value.",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "properties": {
+        "describedBy": {
+            "description": "The URL reference to the schema.",
+            "type": "string",
+            "pattern": "^(http|https)://schema.(.*?)humancellatlas.org/type/process/analysis/(([0-9]{1,}.[0-9]{1,}.[0-9]{1,})|([a-zA-Z]*?))/analysis_process"
+        },
+        "schema_version": {
+            "description": "The version number of the schema in major.minor.patch format.",
+            "type": "string",
+            "pattern": "^[0-9]{1,}.[0-9]{1,}.[0-9]{1,}$",
+            "example": "4.6.1"
+        },
+        "schema_type": {
+            "description": "The type of the metadata schema entity.",
+            "type": "string",
+            "enum": [
+                "process"
+            ]
+        },
+        "provenance": {
+            "description": "Provenance information added or generated at time of ingest.",
+            "required": [
+                "document_id",
+                "submission_date"
+            ],
+            "title": "Provenance",
+            "name": "provenance",
+            "type": "object",
+            "properties": {
+                "submission_date": {
+                    "description": "When project was first submitted to database.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "submitter_id": {
+                    "description": "ID of individual who first submitted project.",
+                    "type": "string"
+                },
+                "update_date": {
+                    "description": "When project was last updated.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updater_id": {
+                    "description": "ID of individual who last updated project.",
+                    "type": "string"
+                },
+                "document_id": {
+                    "description": "Identifier for document.",
+                    "type": "string",
+                    "pattern": ".{8}-.{4}-.{4}-.{4}-.{12}",
+                    "comment": "This structure supports the current ingest API. It may change in the future."
+                },
+                "accession": {
+                    "description": "A unique accession for this entity, provided by the broker.",
+                    "type": "string"
+                }
+            }
+        },
+        "process_core": {
+            "description": "Information relevant to how a biomaterial or file was converted into another biomaterial or file.",
+            "required": [
+                "process_id"
+            ],
+            "title": "Process core",
+            "name": "process_core",
+            "type": "object",
+            "properties": {
+                "process_id": {
+                    "description": "A unique ID for the process.",
+                    "type": "string",
+                    "user_friendly": "Process ID"
+                },
+                "process_name": {
+                    "description": "A short, descriptive name for the process that need not be unique.",
+                    "type": "string",
+                    "user_friendly": "Process name"
+                },
+                "process_description": {
+                    "description": "A general description of the process.",
+                    "type": "string",
+                    "user_friendly": "Process description"
+                },
+                "process_location": {
+                    "description": "Location where the process took place.",
+                    "type": "string",
+                    "example": "Wellcome Trust Sanger Institute; Cancer Institute, Stanford University",
+                    "user_friendly": "Process location"
+                },
+                "operator": {
+                    "description": "Identifier for individual(s) who executed the process.",
+                    "type": "array",
+                    "example": "Technician 1; J.D.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "user_friendly": "Operator identity"
+                }
+            }
+        },
+        "process_type": {
+            "description": "A term that may be associated with a process-related ontology term",
+            "required": [
+                "text"
+            ],
+            "title": "Process type ontology",
+            "name": "process_type_ontology",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "description": "The name of a process type being used.",
+                    "type": "string",
+                    "example": "enzymatic dissociation; blood draw",
+                    "user_friendly": "Process type"
+                },
+                "ontology": {
+                    "description": "An ontology term identifier in the form prefix:accession",
+                    "type": "string",
+                    "graph_restriction": {
+                        "ontologies": [
+                            "obo:efo"
+                        ],
+                        "classes": [
+                            "EFO:0002694"
+                        ],
+                        "relations": [
+                            "rdfs:subClassOf"
+                        ],
+                        "direct": false,
+                        "include_self": false
+                    },
+                    "example": "EFO:0009128; EFO:0009121",
+                    "user_friendly": "Process type ontology ID"
+                },
+                "ontology_label": {
+                    "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                    "type": "string",
+                    "example": "enzymatic dissociation; blood draw",
+                    "user_friendly": "Process type ontology label"
+                }
+            }
+        },
+        "inputs": {
+            "description": "Input parameters used in the pipeline run.",
+            "type": "array",
+            "items": {
+                "additionalProperties": false,
+                "required": [
+                    "parameter_name",
+                    "parameter_value"
+                ],
+                "type": "object",
+                "properties": {
+                    "checksum": {
+                        "type": "string"
+                    },
+                    "parameter_name": {
+                        "type": "string"
+                    },
+                    "parameter_value": {
+                        "description": "Path to file or setting value.",
+                        "type": "string"
+                    }
+                }
+            },
+            "user_friendly": "Input parameters"
+        },
+        "tasks": {
+            "description": "Information about steps in the workflow.",
+            "type": "array",
+            "items": {
+                "additionalProperties": false,
+                "required": [
+                    "task_name",
+                    "start_time",
+                    "stop_time",
+                    "disk_size",
+                    "docker_image",
+                    "cpus",
+                    "memory",
+                    "zone"
+                ],
+                "type": "object",
+                "properties": {
+                    "disk_size": {
+                        "type": "string"
+                    },
+                    "task_name": {
+                        "type": "string"
+                    },
+                    "zone": {
+                        "type": "string"
+                    },
+                    "log_err": {
+                        "type": "string"
+                    },
+                    "start_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "cpus": {
+                        "type": "integer"
+                    },
+                    "log_out": {
+                        "type": "string"
+                    },
+                    "stop_time": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "memory": {
+                        "type": "string"
+                    },
+                    "docker_image": {
+                        "type": "string"
+                    }
+                }
+            },
+            "user_friendly": "Workflow tasks"
+        },
+        "input_bundles": {
+            "description": "UUID(s) of the input bundle(s) used in running the pipeline.",
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "user_friendly": "Input bundles",
+            "example": "b816d2d6-5f10-4447-4194-3d0a804454d6"
+        },
+        "outputs": {
+            "description": "Output files generated by the pipeline run.",
+            "type": "array",
+            "items": {
+                "$schema": "http://json-schema.org/draft-07/schema#",
+                "$id": "http://schema.dev.data.humancellatlas.org/type/file/5.3.5/analysis_file",
+                "description": "A file analysis results produced by a secondary analysis pipeline.",
+                "additionalProperties": false,
+                "required": [
+                    "describedBy",
+                    "schema_type",
+                    "file_core"
+                ],
+                "title": "Analysis file",
+                "name": "analysis_file",
+                "type": "object",
+                "properties": {
+                    "describedBy": {
+                        "description": "The URL reference to the schema.",
+                        "type": "string",
+                        "pattern": "^(http|https)://schema.(.*?)humancellatlas.org/type/file/(([0-9]{1,}.[0-9]{1,}.[0-9]{1,})|([a-zA-Z]*?))/analysis_file"
+                    },
+                    "schema_version": {
+                        "description": "The version number of the schema in major.minor.patch format.",
+                        "type": "string",
+                        "pattern": "^[0-9]{1,}.[0-9]{1,}.[0-9]{1,}$",
+                        "example": "4.6.1"
+                    },
+                    "schema_type": {
+                        "description": "The type of the metadata schema entity.",
+                        "type": "string",
+                        "enum": [
+                            "file"
+                        ]
+                    },
+                    "provenance": {
+                        "description": "Provenance information added or generated at time of ingest.",
+                        "required": [
+                            "document_id",
+                            "submission_date"
+                        ],
+                        "title": "Provenance",
+                        "name": "provenance",
+                        "type": "object",
+                        "properties": {
+                            "submission_date": {
+                                "description": "When project was first submitted to database.",
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "submitter_id": {
+                                "description": "ID of individual who first submitted project.",
+                                "type": "string"
+                            },
+                            "update_date": {
+                                "description": "When project was last updated.",
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "updater_id": {
+                                "description": "ID of individual who last updated project.",
+                                "type": "string"
+                            },
+                            "document_id": {
+                                "description": "Identifier for document.",
+                                "type": "string",
+                                "pattern": ".{8}-.{4}-.{4}-.{4}-.{12}",
+                                "comment": "This structure supports the current ingest API. It may change in the future."
+                            },
+                            "accession": {
+                                "description": "A unique accession for this entity, provided by the broker.",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "file_core": {
+                        "description": "Information about a file produced from any process.",
+                        "required": [
+                            "file_name",
+                            "file_format"
+                        ],
+                        "title": "File core",
+                        "name": "file_core",
+                        "type": "object",
+                        "properties": {
+                            "file_name": {
+                                "description": "The name of the file.",
+                                "type": "string",
+                                "user_friendly": "File name",
+                                "guidelines": "Include the file extension in the file name.",
+                                "example": "R1.fastq.gz; codebook.json"
+                            },
+                            "file_format": {
+                                "description": "The format of the file.",
+                                "type": "string",
+                                "user_friendly": "File format",
+                                "guidelines": "Indicate the full file extension including compression extensions.",
+                                "example": "fastq.gz; tif"
+                            },
+                            "checksum": {
+                                "description": "MD5 checksum of the file.",
+                                "type": "string",
+                                "user_friendly": "Checksum",
+                                "example": "e09a986c2e630130b1849d4bf9a94c06"
+                            }
+                        }
+                    }
+                }
+            },
+            "user_friendly": "Output files"
+        },
+        "timestamp_start_utc": {
+            "description": "Initial start time of the full pipeline in UTC.",
+            "type": "string",
+            "format": "date-time",
+            "user_friendly": "Start timestamp (UTC)",
+            "example": "2018-01-21T09:34:27Z",
+            "guidelines": "Enter the time in date-time format: yyyy-mm-ddThh:mm:ssZ."
+        },
+        "timestamp_stop_utc": {
+            "description": "Terminal stop time of the full pipeline in UTC.",
+            "type": "string",
+            "format": "date-time",
+            "user_friendly": "Stop timestamp (UTC)",
+            "example": "2018-01-21T11:35:01Z",
+            "guidelines": "Enter the time in date-time format: yyyy-mm-ddThh:mm:ssZ."
+        },
+        "analysis_run_type": {
+            "description": "Whether the analysis was run or was copied forward as an optimization.",
+            "type": "string",
+            "enum": [
+                "run",
+                "copy-forward"
+            ],
+            "user_friendly": "Analysis run type",
+            "example": "Should be one of: run, or copy-forward."
+        },
+        "reference_bundle": {
+            "description": "UUID of the bundle containing the reference used in running the pipeline.",
+            "type": "string",
+            "user_friendly": "Reference bundle",
+            "example": "b816d2d6-5f10-4447-4194-3d0a804454d6"
+        }
+    }
+}

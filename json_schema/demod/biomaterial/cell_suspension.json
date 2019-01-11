@@ -1,0 +1,473 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://schema.dev.data.humancellatlas.org/type/biomaterial/8.6.6/cell_suspension",
+    "description": "Information about the suspension of cells or nuclei derived from the collected or cultured specimen.",
+    "additionalProperties": false,
+    "required": [
+        "describedBy",
+        "schema_type",
+        "biomaterial_core"
+    ],
+    "title": "Cell suspension",
+    "name": "cell_suspension",
+    "type": "object",
+    "properties": {
+        "describedBy": {
+            "description": "The URL reference to the schema.",
+            "type": "string",
+            "pattern": "^(http|https)://schema.(.*?)humancellatlas.org/type/biomaterial/(([0-9]{1,}.[0-9]{1,}.[0-9]{1,})|([a-zA-Z]*?))/cell_suspension"
+        },
+        "schema_version": {
+            "description": "The version number of the schema in major.minor.patch format.",
+            "type": "string",
+            "pattern": "^[0-9]{1,}.[0-9]{1,}.[0-9]{1,}$",
+            "example": "4.6.1"
+        },
+        "schema_type": {
+            "description": "The type of the metadata schema entity.",
+            "type": "string",
+            "enum": [
+                "biomaterial"
+            ]
+        },
+        "provenance": {
+            "description": "Provenance information added or generated at time of ingest.",
+            "required": [
+                "document_id",
+                "submission_date"
+            ],
+            "title": "Provenance",
+            "name": "provenance",
+            "type": "object",
+            "properties": {
+                "submission_date": {
+                    "description": "When project was first submitted to database.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "submitter_id": {
+                    "description": "ID of individual who first submitted project.",
+                    "type": "string"
+                },
+                "update_date": {
+                    "description": "When project was last updated.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updater_id": {
+                    "description": "ID of individual who last updated project.",
+                    "type": "string"
+                },
+                "document_id": {
+                    "description": "Identifier for document.",
+                    "type": "string",
+                    "pattern": ".{8}-.{4}-.{4}-.{4}-.{12}",
+                    "comment": "This structure supports the current ingest API. It may change in the future."
+                },
+                "accession": {
+                    "description": "A unique accession for this entity, provided by the broker.",
+                    "type": "string"
+                }
+            }
+        },
+        "biomaterial_core": {
+            "description": "Information about any biological material that was generated/used in the project including everything from a whole organism to subcellular components.",
+            "required": [
+                "biomaterial_id",
+                "ncbi_taxon_id"
+            ],
+            "title": "Biomaterial core",
+            "name": "biomaterial_core",
+            "type": "object",
+            "properties": {
+                "biomaterial_id": {
+                    "description": "A unique ID for the biomaterial.",
+                    "type": "string",
+                    "user_friendly": "Biomaterial ID"
+                },
+                "biomaterial_name": {
+                    "description": "A short, descriptive name for the biomaterial that need not be unique.",
+                    "type": "string",
+                    "user_friendly": "Biomaterial name"
+                },
+                "biomaterial_description": {
+                    "description": "A general description of the biomaterial.",
+                    "type": "string",
+                    "user_friendly": "Biomaterial description"
+                },
+                "ncbi_taxon_id": {
+                    "description": "A taxonomy ID (taxonID) from NCBI.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "user_friendly": "NCBI taxon ID",
+                    "example": 9606
+                },
+                "genotype": {
+                    "description": "Genotype of the biomaterial.",
+                    "type": "string",
+                    "user_friendly": "Genotype",
+                    "example": "DRB1 0401 protective allele; HLA-B*3901 allele"
+                },
+                "supplementary_files": {
+                    "description": "A list of filenames of biomaterial-level supplementary files.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "user_friendly": "Supplementary files"
+                },
+                "biosd_biomaterial": {
+                    "description": "A BioSamples ID.",
+                    "type": "string",
+                    "pattern": "^SAM(D|N|E([AG]?))[0-9]+$",
+                    "user_friendly": "BioSamples ID",
+                    "example": "SAMN00000000",
+                    "guidelines": "Enter ID if sample has been archived. ID can be from the DDBJ, NCBI, or EMBL-EBI and must start with SAMD, SAMN, or SAME, respectively."
+                },
+                "insdc_biomaterial": {
+                    "description": "An International Nucleotide Sequence Database Collaboration (INSDC) sample accession.",
+                    "type": "string",
+                    "pattern": "^[D|E|S]RS[0-9]+$",
+                    "user_friendly": "INSDC ID",
+                    "example": "SRS0000000",
+                    "guidelines": "Enter accession if sample has been archived. Accession can be from the DDBJ, NCBI, or EMBL-EBI and must start with DRS, SRS, or ERS, respecitvely."
+                }
+            }
+        },
+        "cell_morphology": {
+            "description": "Information relating to pathological and morphological features of cells.",
+            "title": "Cell morphology",
+            "name": "cell_morphology",
+            "type": "object",
+            "properties": {
+                "cell_morphology": {
+                    "description": "General description of the morphology of cells.",
+                    "type": "string",
+                    "user_friendly": "Cell morphology",
+                    "example": "adherent cells; form single layer colonies"
+                },
+                "cell_size": {
+                    "description": "Size of cells in Cell size unit.",
+                    "type": "string",
+                    "pattern": "^[0-9]+\\.?[0-9]*-?[0-9]*\\.?[0-9]*$",
+                    "example": "15; 20-30",
+                    "user_friendly": "Cell size",
+                    "guidelines": "Enter a single value or a range. Average value is acceptable."
+                },
+                "cell_size_unit": {
+                    "description": "A term that may be associated with a cell type-related ontology term",
+                    "required": [
+                        "text"
+                    ],
+                    "title": "Length unit ontology",
+                    "name": "length_unit_ontology",
+                    "type": "object",
+                    "properties": {
+                        "text": {
+                            "description": "The name of a length unit being used.",
+                            "type": "string",
+                            "user_friendly": "Length unit",
+                            "example": "micrometer; meter"
+                        },
+                        "ontology": {
+                            "description": "An ontology term identifier in the form prefix:accession",
+                            "type": "string",
+                            "graph_restriction": {
+                                "ontologies": [
+                                    "obo:efo",
+                                    "obo:uo"
+                                ],
+                                "classes": [
+                                    "UO:0000001"
+                                ],
+                                "relations": [
+                                    "rdfs:subClassOf"
+                                ],
+                                "direct": false,
+                                "include_self": false
+                            },
+                            "user_friendly": "Length unit ontology ID",
+                            "example": "UO:0000017; UO:0000008"
+                        },
+                        "ontology_label": {
+                            "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                            "type": "string",
+                            "user_friendly": "Length unit ontology label",
+                            "example": "micrometer; meter"
+                        }
+                    }
+                },
+                "percent_cell_viability": {
+                    "description": "Percent of cells determined to be viable.",
+                    "type": "number",
+                    "example": 98.7,
+                    "user_friendly": "Percent cell viability",
+                    "guidelines": "Enter a single number. Average value is acceptable."
+                },
+                "cell_viability_method": {
+                    "description": "The method by which cell viability was determined.",
+                    "type": "string",
+                    "example": "Fluorescein diacetate hydrolysis; ATP test",
+                    "user_friendly": "Cell viability method"
+                },
+                "cell_viability_result": {
+                    "description": "Result of the cell viability test.",
+                    "type": "string",
+                    "enum": [
+                        "pass",
+                        "fail"
+                    ],
+                    "example": "Should be one of: pass, fail",
+                    "user_friendly": "Cell viability result"
+                },
+                "percent_necrosis": {
+                    "description": "Percent of cells identified to be necrotic.",
+                    "type": "number",
+                    "example": 10,
+                    "user_friendly": "Percent necrotic cells",
+                    "guidelines": "Enter a single number. Average value is acceptable."
+                }
+            }
+        },
+        "growth_conditions": {
+            "description": "Information relating to how a biomaterial was grown and/or maintained in a laboratory setting.",
+            "title": "Growth conditions",
+            "name": "growth_conditions",
+            "type": "object",
+            "properties": {
+                "passage_number": {
+                    "description": "The number of passages that the biomaterial has been through.",
+                    "maximum": 1000,
+                    "minimum": 0,
+                    "type": "integer",
+                    "example": 22,
+                    "user_friendly": "Passage number",
+                    "guidelines": "Enter a single integer."
+                },
+                "growth_medium": {
+                    "description": "The solid, liquid, or semi-solid medium used to support growth.",
+                    "type": "string",
+                    "example": "human placental cord serum; RPMI 1640 + 2mM Glutamine + 10-20% FBS",
+                    "user_friendly": "Growth medium"
+                },
+                "culture_environment": {
+                    "description": "Cell culture environment in which cells are grown.",
+                    "type": "string",
+                    "example": "Adherent cell culture; Suspension cell culture",
+                    "user_friendly": "Culture environment"
+                },
+                "mycoplasma_testing_method": {
+                    "description": "The method by which the biomaterial was tested for mycoplasma contamination.",
+                    "type": "string",
+                    "enum": [
+                        "Direct DNA stain",
+                        "Indirect DNA stain",
+                        "Broth and agar culture",
+                        "PCR",
+                        "Nested PCR",
+                        "ELISA",
+                        "Autoradiography",
+                        "Immunostaining",
+                        "Cell-based assay",
+                        "Microbiological assay"
+                    ],
+                    "example": "Should be one of: Direct DNA stain, Indirect DNA stain, Broth and agar culture, PCR, Nested PCR, ELISA, Autoradiography, Immunostaining, Cell-based assay, or Microbiological assay.",
+                    "user_friendly": "Mycoplasma testing method"
+                },
+                "mycoplasma_testing_results": {
+                    "description": "Whether the biomaterial passed or failed the mycoplasma test.",
+                    "type": "string",
+                    "enum": [
+                        "pass",
+                        "fail"
+                    ],
+                    "example": "Should be one of: pass, or fail.",
+                    "user_friendly": "Mycoplasma testing results"
+                },
+                "drug_treatment": {
+                    "description": "Description of drugs added to the growth medium.",
+                    "type": "string",
+                    "example": "100 ug/mL ampicillin; 15 ug/mL tetracycline",
+                    "user_friendly": "Drug treatment",
+                    "guidelines": "Provide the drug name and concentration with units. List multiple drugs separated by commas."
+                },
+                "feeder_layer_type": {
+                    "description": "Type of feeder layer cells on which biomaterial was grown.",
+                    "type": "string",
+                    "enum": [
+                        "feeder-free",
+                        "feeder-dependent, JK1 feeder cells",
+                        "feeder-dependent, SNL 76/7 feeder cells",
+                        "feeder-dependent, human marrow stromal cells",
+                        "feeder-dependent, bovine embryonic fibroblast cells",
+                        "feeder-dependent, mouse embryonic fibroblast cells",
+                        "feeder-dependent, mouse fibroblast STO cells",
+                        "feeder-dependent, mouse bone marrow stromal cells",
+                        "feeder-dependent, mouse yolk sac-derived endothelial cells",
+                        "feeder-dependent, human foreskin fibroblast cells",
+                        "feeder-dependent, human newborn fibroblast cells",
+                        "feeder-dependent, human fetal lung fibroblast cells",
+                        "feeder-dependent, human uterine endometrial cells",
+                        "feeder-dependent, human breast parenchymal cells",
+                        "feeder-dependent, human embryonic fibroblast cells",
+                        "feeder-dependent, human adipose stromal cells",
+                        "feeder-dependent, human amniotic epithelial cells",
+                        "feeder-dependent, human placental fibroblast cells",
+                        "feeder-dependent, human umbilical cord stromal cells",
+                        "feeder-dependent, human fetal muscle cells",
+                        "feeder-dependent, human fetal skin cells",
+                        "feeder-dependent, human fetal liver stromal cells",
+                        "feeder-dependent, human fallopian tubal epithelial cells",
+                        "feeder-dependent, human amniotic mesenchymal cells"
+                    ],
+                    "example": "feeder-free; feeder-dependent, mouse embryonic fibroblast cells",
+                    "user_friendly": "Feeder layer type"
+                }
+            }
+        },
+        "genus_species": {
+            "description": "The scientific binomial name for the species of the suspension.",
+            "type": "array",
+            "items": {
+                "description": "A term that may be associated with a species-related ontology term",
+                "required": [
+                    "text"
+                ],
+                "title": "Species ontology",
+                "name": "species_ontology",
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "description": "The name of the species to which the organism belongs.",
+                        "type": "string",
+                        "example": "Homo sapiens; Mus musculus",
+                        "user_friendly": "Species"
+                    },
+                    "ontology": {
+                        "description": "An ontology term identifier in the form prefix:accession",
+                        "type": "string",
+                        "graph_restriction": {
+                            "ontologies": [
+                                "obo:efo",
+                                "obo:NCBITaxon"
+                            ],
+                            "classes": [
+                                "OBI:0100026",
+                                "NCBITaxon:2759"
+                            ],
+                            "relations": [
+                                "rdfs:subClassOf"
+                            ],
+                            "direct": false,
+                            "include_self": false
+                        },
+                        "example": "NCBITaxon:9606; NCBITaxon:10090",
+                        "user_friendly": "Species ontology ID"
+                    },
+                    "ontology_label": {
+                        "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                        "type": "string",
+                        "example": "Homo sapiens; Mus musculus",
+                        "user_friendly": "Species ontology label"
+                    }
+                }
+            },
+            "user_friendly": "Genus species"
+        },
+        "selected_cell_type": {
+            "description": "The cell type(s) selected to be present in the suspension.",
+            "type": "array",
+            "items": {
+                "description": "A term that may be associated with a cell type-related ontology term",
+                "required": [
+                    "text"
+                ],
+                "title": "Cell type ontology",
+                "name": "cell_type_ontology",
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "description": "The name of a cell type supplied by a user.",
+                        "type": "string",
+                        "user_friendly": "Cell type",
+                        "example": "bone marrow hematopoietic cell; cardiac muscle cell"
+                    },
+                    "ontology": {
+                        "description": "An ontology term identifier in the form prefix:accession",
+                        "type": "string",
+                        "graph_restriction": {
+                            "ontologies": [
+                                "obo:hcao",
+                                "obo:cl"
+                            ],
+                            "classes": [
+                                "CL:0000003"
+                            ],
+                            "relations": [
+                                "rdfs:subClassOf"
+                            ],
+                            "direct": false,
+                            "include_self": false
+                        },
+                        "user_friendly": "Cell type ontology ID",
+                        "example": "CL:1001610; CL:0000746"
+                    },
+                    "ontology_label": {
+                        "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                        "type": "string",
+                        "user_friendly": "Cell type ontology label",
+                        "example": "bone marrow hematopoietic cell; cardiac muscle cell"
+                    }
+                }
+            },
+            "user_friendly": "Selected cell type"
+        },
+        "total_estimated_cells": {
+            "description": "Total estimated number of cells in the suspension.",
+            "type": "integer",
+            "maximum": 1000000000,
+            "minimum": 0,
+            "example": 2100,
+            "user_friendly": "Estimated cell count",
+            "guidelines": "Enter 1 for well-based assays."
+        },
+        "plate_based_sequencing": {
+            "description": "Information specific to plate-based sequencing experiments.",
+            "required": [
+                "plate_id"
+            ],
+            "title": "Plate-based sequencing",
+            "name": "plate_based_sequencing",
+            "type": "object",
+            "properties": {
+                "plate_id": {
+                    "description": "An ID for the plate that the well is located on.",
+                    "type": "string",
+                    "user_friendly": "Plate ID",
+                    "example": "2217"
+                },
+                "well_id": {
+                    "description": "An ID or name for the well.",
+                    "type": "string",
+                    "user_friendly": "Well ID",
+                    "example": "A1",
+                    "guidelines": " Well ID should be unique for the plate."
+                },
+                "cell_quality": {
+                    "description": "Quality of well if imaged before sequencing.",
+                    "type": "string",
+                    "enum": [
+                        "OK",
+                        "control, 2-cell well",
+                        "control, empty well",
+                        "low quality cell"
+                    ],
+                    "user_friendly": "Well quality",
+                    "example": "Should be one of: 'OK', 'control, 2-cell well', 'control, empty well', or 'low quality cell'."
+                }
+            }
+        }
+    }
+}

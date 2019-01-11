@@ -1,0 +1,552 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://schema.dev.data.humancellatlas.org/type/biomaterial/6.3.8/specimen_from_organism",
+    "description": "Information about the specimen that was collected from the donor organism.",
+    "additionalProperties": false,
+    "required": [
+        "describedBy",
+        "schema_type",
+        "biomaterial_core",
+        "organ"
+    ],
+    "title": "Specimen from organism",
+    "name": "specimen_from_organism",
+    "type": "object",
+    "properties": {
+        "describedBy": {
+            "description": "The URL reference to the schema.",
+            "type": "string",
+            "pattern": "^(http|https)://schema.(.*?)humancellatlas.org/type/biomaterial/(([0-9]{1,}.[0-9]{1,}.[0-9]{1,})|([a-zA-Z]*?))/specimen_from_organism"
+        },
+        "schema_version": {
+            "description": "The version number of the schema in major.minor.patch format.",
+            "type": "string",
+            "pattern": "^[0-9]{1,}.[0-9]{1,}.[0-9]{1,}$",
+            "example": "4.6.1"
+        },
+        "schema_type": {
+            "description": "The type of the metadata schema entity.",
+            "type": "string",
+            "enum": [
+                "biomaterial"
+            ]
+        },
+        "provenance": {
+            "description": "Provenance information added or generated at time of ingest.",
+            "required": [
+                "document_id",
+                "submission_date"
+            ],
+            "title": "Provenance",
+            "name": "provenance",
+            "type": "object",
+            "properties": {
+                "submission_date": {
+                    "description": "When project was first submitted to database.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "submitter_id": {
+                    "description": "ID of individual who first submitted project.",
+                    "type": "string"
+                },
+                "update_date": {
+                    "description": "When project was last updated.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updater_id": {
+                    "description": "ID of individual who last updated project.",
+                    "type": "string"
+                },
+                "document_id": {
+                    "description": "Identifier for document.",
+                    "type": "string",
+                    "pattern": ".{8}-.{4}-.{4}-.{4}-.{12}",
+                    "comment": "This structure supports the current ingest API. It may change in the future."
+                },
+                "accession": {
+                    "description": "A unique accession for this entity, provided by the broker.",
+                    "type": "string"
+                }
+            }
+        },
+        "biomaterial_core": {
+            "description": "Information about any biological material that was generated/used in the project including everything from a whole organism to subcellular components.",
+            "required": [
+                "biomaterial_id",
+                "ncbi_taxon_id"
+            ],
+            "title": "Biomaterial core",
+            "name": "biomaterial_core",
+            "type": "object",
+            "properties": {
+                "biomaterial_id": {
+                    "description": "A unique ID for the biomaterial.",
+                    "type": "string",
+                    "user_friendly": "Biomaterial ID"
+                },
+                "biomaterial_name": {
+                    "description": "A short, descriptive name for the biomaterial that need not be unique.",
+                    "type": "string",
+                    "user_friendly": "Biomaterial name"
+                },
+                "biomaterial_description": {
+                    "description": "A general description of the biomaterial.",
+                    "type": "string",
+                    "user_friendly": "Biomaterial description"
+                },
+                "ncbi_taxon_id": {
+                    "description": "A taxonomy ID (taxonID) from NCBI.",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "user_friendly": "NCBI taxon ID",
+                    "example": 9606
+                },
+                "genotype": {
+                    "description": "Genotype of the biomaterial.",
+                    "type": "string",
+                    "user_friendly": "Genotype",
+                    "example": "DRB1 0401 protective allele; HLA-B*3901 allele"
+                },
+                "supplementary_files": {
+                    "description": "A list of filenames of biomaterial-level supplementary files.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "user_friendly": "Supplementary files"
+                },
+                "biosd_biomaterial": {
+                    "description": "A BioSamples ID.",
+                    "type": "string",
+                    "pattern": "^SAM(D|N|E([AG]?))[0-9]+$",
+                    "user_friendly": "BioSamples ID",
+                    "example": "SAMN00000000",
+                    "guidelines": "Enter ID if sample has been archived. ID can be from the DDBJ, NCBI, or EMBL-EBI and must start with SAMD, SAMN, or SAME, respectively."
+                },
+                "insdc_biomaterial": {
+                    "description": "An International Nucleotide Sequence Database Collaboration (INSDC) sample accession.",
+                    "type": "string",
+                    "pattern": "^[D|E|S]RS[0-9]+$",
+                    "user_friendly": "INSDC ID",
+                    "example": "SRS0000000",
+                    "guidelines": "Enter accession if sample has been archived. Accession can be from the DDBJ, NCBI, or EMBL-EBI and must start with DRS, SRS, or ERS, respecitvely."
+                }
+            }
+        },
+        "genus_species": {
+            "description": "The scientific binomial name for the species of the specimen.",
+            "type": "array",
+            "items": {
+                "description": "A term that may be associated with a species-related ontology term",
+                "required": [
+                    "text"
+                ],
+                "title": "Species ontology",
+                "name": "species_ontology",
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "description": "The name of the species to which the organism belongs.",
+                        "type": "string",
+                        "example": "Homo sapiens; Mus musculus",
+                        "user_friendly": "Species"
+                    },
+                    "ontology": {
+                        "description": "An ontology term identifier in the form prefix:accession",
+                        "type": "string",
+                        "graph_restriction": {
+                            "ontologies": [
+                                "obo:efo",
+                                "obo:NCBITaxon"
+                            ],
+                            "classes": [
+                                "OBI:0100026",
+                                "NCBITaxon:2759"
+                            ],
+                            "relations": [
+                                "rdfs:subClassOf"
+                            ],
+                            "direct": false,
+                            "include_self": false
+                        },
+                        "example": "NCBITaxon:9606; NCBITaxon:10090",
+                        "user_friendly": "Species ontology ID"
+                    },
+                    "ontology_label": {
+                        "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                        "type": "string",
+                        "example": "Homo sapiens; Mus musculus",
+                        "user_friendly": "Species ontology label"
+                    }
+                }
+            },
+            "user_friendly": "Genus species"
+        },
+        "organ": {
+            "description": "A term that may be associated with an anatomy-related ontology term.",
+            "required": [
+                "text"
+            ],
+            "title": "Organ ontology",
+            "name": "organ_ontology",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "description": "The text for the term as the user provides it.",
+                    "type": "string",
+                    "user_friendly": "Organ",
+                    "example": "heart; immune system"
+                },
+                "ontology": {
+                    "description": "A term from the ontology [UBERON](https://www.ebi.ac.uk/ols/ontologies/uberon) for an organ or a cellular bodily fluid such as blood or lymph.",
+                    "type": "string",
+                    "graph_restriction": {
+                        "ontologies": [
+                            "obo:hcao",
+                            "obo:uberon"
+                        ],
+                        "classes": [
+                            "UBERON:0000465"
+                        ],
+                        "relations": [
+                            "rdfs:subClassOf"
+                        ],
+                        "direct": false,
+                        "include_self": true
+                    },
+                    "user_friendly": "Organ ontology ID",
+                    "example": "UBERON:0000948; UBERON:0002405"
+                },
+                "ontology_label": {
+                    "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                    "type": "string",
+                    "user_friendly": "Organ ontology label",
+                    "example": "heart; immune system"
+                }
+            }
+        },
+        "organ_part": {
+            "description": "A term that may be associated with an anatomy-related ontology term",
+            "required": [
+                "text"
+            ],
+            "title": "Organ part ontology",
+            "name": "organ_part_ontology",
+            "type": "object",
+            "properties": {
+                "text": {
+                    "description": "The text for the term as the user provides it.",
+                    "type": "string",
+                    "user_friendly": "Organ part",
+                    "example": "bone marrow; islet of Langerhans"
+                },
+                "ontology": {
+                    "description": "A term for a specific part of an organ from the ontology [UBERON](https://www.ebi.ac.uk/ols/ontologies/uberon).",
+                    "type": "string",
+                    "graph_restriction": {
+                        "ontologies": [
+                            "obo:hcao",
+                            "obo:uberon"
+                        ],
+                        "classes": [
+                            "UBERON:0000465"
+                        ],
+                        "relations": [
+                            "rdfs:subClassOf"
+                        ],
+                        "direct": false,
+                        "include_self": true
+                    },
+                    "user_friendly": "Organ part ontology ID",
+                    "example": "UBERON:0002371; UBERON:0000006"
+                },
+                "ontology_label": {
+                    "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                    "type": "string",
+                    "user_friendly": "Organ part ontology label",
+                    "example": "bone marrow; islet of Langerhans"
+                }
+            }
+        },
+        "diseases": {
+            "description": "Short description of known disease(s) of the specimen.",
+            "type": "array",
+            "items": {
+                "description": "A term that may be associated with a disease-related ontology term",
+                "required": [
+                    "text"
+                ],
+                "title": "Disease ontology",
+                "name": "disease_ontology",
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "description": "The text for the term as the user provides it.",
+                        "type": "string",
+                        "user_friendly": "Disease",
+                        "example": "type 2 diabetes mellitus; normal"
+                    },
+                    "ontology": {
+                        "description": "An optional ontology reference in format where prefix_ indicates which ontology",
+                        "type": "string",
+                        "graph_restriction": {
+                            "ontologies": [
+                                "obo:mondo",
+                                "obo:efo"
+                            ],
+                            "classes": [
+                                "MONDO:0000001",
+                                "PATO:0000461"
+                            ],
+                            "relations": [
+                                "rdfs:subClassOf"
+                            ],
+                            "direct": false,
+                            "include_self": true
+                        },
+                        "user_friendly": "Disease ontology ID",
+                        "example": "MONDO:0005148; PATO:0000461"
+                    },
+                    "ontology_label": {
+                        "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                        "type": "string",
+                        "user_friendly": "Disease ontology label",
+                        "example": "type 2 diabetes mellitus; normal"
+                    }
+                }
+            },
+            "user_friendly": "Known disease(s)",
+            "guidelines": "Enter normal if no known diseases."
+        },
+        "state_of_specimen": {
+            "description": "State of specimen at time of collection.",
+            "title": "State of specimen",
+            "name": "state_of_specimen",
+            "type": "object",
+            "properties": {
+                "autolysis_score": {
+                    "description": "State of tissue breakdown due to self-digestion.",
+                    "type": "string",
+                    "enum": [
+                        "none",
+                        "mild",
+                        "moderate"
+                    ],
+                    "user_friendly": "Autolysis score",
+                    "example": "Should be one of: none, mild, or moderate."
+                },
+                "gross_description": {
+                    "description": "Color, size, and other aspects of specimen as visible to naked eye.",
+                    "type": "string",
+                    "user_friendly": "Gross description",
+                    "example": "focal wedge shaped region of tan-orange discoloration; cystic"
+                },
+                "gross_image": {
+                    "description": "List of filenames of photographs of specimen without magnification.",
+                    "type": "array",
+                    "items": {
+                        "pattern": "^.*.jpg$|^.*.jpeg$|^.*.tiff$|^.*.png$",
+                        "type": "string"
+                    },
+                    "user_friendly": "Gross image",
+                    "example": "my_gross_image_file.jpg",
+                    "guidelines": "File must be of format JPEG, TIFF, or PNG."
+                },
+                "ischemic_temperature": {
+                    "description": "Whether specimen experienced warm or cold ischemia.",
+                    "type": "string",
+                    "enum": [
+                        "warm",
+                        "cold"
+                    ],
+                    "user_friendly": "Ischemic temperature",
+                    "example": "Should be one of: warm, or cold."
+                },
+                "ischemic_time": {
+                    "description": "Duration of time, in seconds, between when the specimen stopped receiving oxygen and when it was preserved or processed.",
+                    "type": "integer",
+                    "maximum": 1000000,
+                    "minimum": 0,
+                    "example": 7200,
+                    "user_friendly": "Ischemic time"
+                },
+                "microscopic_description": {
+                    "description": "How the specimen looks under the microscope and how it compares with normal cells.",
+                    "type": "string",
+                    "user_friendly": "Microscopic description",
+                    "example": "Mixture of different cell sizes apparent; Dead cells are quite faint on microscope"
+                },
+                "microscopic_image": {
+                    "description": "List of filenames of photographs of specimen under microscope.",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^.*.jpg$|^.*.jpeg$|^.*.tiff$|^.*.png$"
+                    },
+                    "user_friendly": "Microscopic image",
+                    "example": "my_microscopic_image_file.jpg",
+                    "guidelines": "File must be of format JPEG, TIFF, or PNG."
+                },
+                "postmortem_interval": {
+                    "description": "Duration of time between when death was declared and when the specimen was preserved or processed.",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 2400,
+                    "user_friendly": "Post-mortem interval",
+                    "guidelines": "Enter time in seconds."
+                }
+            }
+        },
+        "preservation_storage": {
+            "description": "Information relating to how a biomaterial was preserved and/or stored over a period of time.",
+            "title": "Preservation and storage",
+            "name": "preservation_storage",
+            "type": "object",
+            "properties": {
+                "storage_method": {
+                    "description": "The method by which a biomaterial was stored after preservation or before another protocol was used.",
+                    "type": "string",
+                    "enum": [
+                        "ambient temperature",
+                        "cut slide",
+                        "fresh",
+                        "frozen, -70C freezer",
+                        "frozen, -150C freezer",
+                        "frozen, liquid nitrogen",
+                        "frozen, vapor phase",
+                        "paraffin block",
+                        "RNAlater, frozen",
+                        "TRIzol, frozen"
+                    ],
+                    "example": "frozen, liquid nitrogen; fresh",
+                    "user_friendly": "Storage method"
+                },
+                "storage_time": {
+                    "description": "Length of time the biomaterial was stored for in Storage time units.",
+                    "type": "number",
+                    "example": 5,
+                    "user_friendly": "Storage time"
+                },
+                "storage_time_unit": {
+                    "description": "A term that may be associated with a time unit-related ontology term",
+                    "required": [
+                        "text"
+                    ],
+                    "title": "Time unit ontology",
+                    "name": "time_unit_ontology",
+                    "properties": {
+                        "text": {
+                            "description": "The name of a time unit being used.",
+                            "type": "string",
+                            "example": "second; week",
+                            "user_friendly": "Time unit"
+                        },
+                        "ontology": {
+                            "description": "An ontology term identifier in the form prefix:accession",
+                            "type": "string",
+                            "graph_restriction": {
+                                "ontologies": [
+                                    "obo:efo",
+                                    "obo:uo"
+                                ],
+                                "classes": [
+                                    "UO:0000003",
+                                    "UO:0000149"
+                                ],
+                                "relations": [
+                                    "rdfs:subClassOf"
+                                ],
+                                "direct": false,
+                                "include_self": false
+                            },
+                            "example": "UO:0000010; UO:0000034",
+                            "user_friendly": "Time unit ontology ID"
+                        },
+                        "ontology_label": {
+                            "description": "The preferred label for the ontology term referred to in the ontology field. This may differ from the user-supplied value in the text field",
+                            "type": "string",
+                            "example": "second; week",
+                            "user_friendly": "Time unit ontology label"
+                        }
+                    },
+                    "type": "object"
+                },
+                "preservation_method": {
+                    "description": "The method by which a biomaterial was preserved through the use of chemicals, cold, or other means to prevent or retard biological or physical deterioration.",
+                    "type": "string",
+                    "enum": [
+                        "cryopreservation in liquid nitrogen (dead tissue)",
+                        "cryopreservation in dry ice (dead tissue)",
+                        "cryopreservation of live cells in liquid nitrogen",
+                        "cryopreservation, other",
+                        "formalin fixed, unbuffered",
+                        "formalin fixed, buffered",
+                        "formalin fixed and paraffin embedded",
+                        "fresh"
+                    ],
+                    "example": "cryopreservation in liquid nitrogen (dead tissue); fresh",
+                    "user_friendly": "Preservation method",
+                    "guidelines": "Enter 'fresh' if not preserved."
+                }
+            }
+        },
+        "collection_time": {
+            "description": "When the biomaterial was collected.",
+            "type": "string",
+            "format": "date-time",
+            "user_friendly": "Time of collection",
+            "example": "2017-03-19T07:22:00Z",
+            "guidelines": "Enter the time in date-time format: yyyy-mm-ddThh:mm:ssZ."
+        },
+        "purchased_specimen": {
+            "description": "Information describing purchased kits or reagents used in a protocol.",
+            "title": "Purchased reagents",
+            "name": "purchased_reagents",
+            "type": "object",
+            "properties": {
+                "retail_name": {
+                    "description": "The retail name of the kit/reagent.",
+                    "type": "string",
+                    "example": "SureCell WTA 3' Library Prep Kit; CytoTune iPS 2.0 Sendai Reprogramming Kit",
+                    "user_friendly": "Retail name"
+                },
+                "catalog_number": {
+                    "description": "The catalog number of the kit/reagent.",
+                    "type": "string",
+                    "example": "20014279",
+                    "user_friendly": "Catalog number"
+                },
+                "manufacturer": {
+                    "description": "The manufacturer of the kit/reagent.",
+                    "type": "string",
+                    "example": "Illumina; ThermoFisher Scientific",
+                    "user_friendly": "Manufacturer"
+                },
+                "lot_number": {
+                    "description": "The batch or lot number of the kit/reagent.",
+                    "type": "string",
+                    "example": "10001A",
+                    "user_friendly": "Batch/lot number"
+                },
+                "expiry_date": {
+                    "description": "The date of expiration for the kit/reagent.",
+                    "type": "string",
+                    "format": "date",
+                    "example": "2018-01-31",
+                    "user_friendly": "Expiry date",
+                    "guidelines": "Enter the time in date format: yyyy-mm-dd."
+                },
+                "kit_titer": {
+                    "description": "Appropriate titer and volume recommendations found in kit/reagent Certificate of Analysis.",
+                    "type": "string",
+                    "example": "3.0x10^7",
+                    "user_friendly": "Titer"
+                }
+            }
+        }
+    }
+}
